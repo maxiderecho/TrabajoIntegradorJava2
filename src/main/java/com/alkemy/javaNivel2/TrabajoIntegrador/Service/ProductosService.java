@@ -29,6 +29,12 @@ public class ProductosService {
         return modelMapper.map(savedProducto, ProductoDto.class);
     }
 
+    public List<ProductoDto> getAllProductos() {
+        return productoRepository.findAll().stream()
+                .map(producto -> modelMapper.map(producto, ProductoDto.class))
+                .collect(Collectors.toList());
+    }
+
     public Optional<ProductoDto> getProductoById(String id) {
         Optional<Producto> producto = productoRepository.findById(id);
         return producto.map(p -> modelMapper.map(p, ProductoDto.class));

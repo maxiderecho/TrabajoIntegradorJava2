@@ -26,6 +26,12 @@ public class ProductosController {
         return new ResponseEntity<>(createdProducto, HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<ProductoDto>> getAllProductos() {
+        List<ProductoDto> productos = productoService.getAllProductos();
+        return new ResponseEntity<>(productos, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProductoDto> getProductoById(@PathVariable String id) {
         return productoService.getProductoById(id)
