@@ -4,11 +4,11 @@ import com.alkemy.javaNivel2.TrabajoIntegrador.Dto.LibroRequestDTO;
 import com.alkemy.javaNivel2.TrabajoIntegrador.Dto.LibroResponseDTO;
 import com.alkemy.javaNivel2.TrabajoIntegrador.Model.EstadoLectura;
 import com.alkemy.javaNivel2.TrabajoIntegrador.Service.LibroService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -21,14 +21,22 @@ public class LibroController {
 
     @PostMapping
     public ResponseEntity<LibroResponseDTO> crearLibro(@Valid @RequestBody LibroRequestDTO libroDTO) {
-        LibroResponseDTO nuevoLibro = libroService.crearLibro(libroDTO);
-        return new ResponseEntity<>(nuevoLibro, HttpStatus.CREATED);
+        try {
+            LibroResponseDTO nuevoLibro = libroService.crearLibro(libroDTO).join();
+            return new ResponseEntity<>(nuevoLibro, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<LibroResponseDTO>> obtenerTodosLosLibros() {
-        List<LibroResponseDTO> libros = libroService.obtenerTodosLosLibros();
-        return new ResponseEntity<>(libros, HttpStatus.OK);
+        try {
+            List<LibroResponseDTO> libros = libroService.obtenerTodosLosLibros().join();
+            return new ResponseEntity<>(libros, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{id}")
@@ -41,20 +49,24 @@ public class LibroController {
     @PutMapping("/{id}")
     public ResponseEntity<LibroResponseDTO> actualizarLibro(@PathVariable String id, @Valid @RequestBody LibroRequestDTO libroDTO) {
         try {
-            LibroResponseDTO libroActualizado = libroService.actualizarLibro(id, libroDTO);
+            LibroResponseDTO libroActualizado = libroService.actualizarLibro(id, libroDTO).join();
             return new ResponseEntity<>(libroActualizado, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarLibro(@PathVariable String id) {
         try {
-            libroService.eliminarLibro(id);
+            libroService.eliminarLibro(id).join();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

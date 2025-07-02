@@ -6,13 +6,14 @@ import com.alkemy.javaNivel2.TrabajoIntegrador.Model.EstadoLectura;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public interface LibroService {
-    LibroResponseDTO crearLibro(LibroRequestDTO libroDTO);
-    List<LibroResponseDTO> obtenerTodosLosLibros();
+    CompletableFuture<LibroResponseDTO> crearLibro(LibroRequestDTO libroDTO);
+    CompletableFuture<List<LibroResponseDTO>> obtenerTodosLosLibros();
     Optional<LibroResponseDTO> obtenerLibroPorId(String id);
-    LibroResponseDTO actualizarLibro(String id, LibroRequestDTO libroDTO);
-    void eliminarLibro(String id);
+    CompletableFuture<LibroResponseDTO> actualizarLibro(String id, LibroRequestDTO libroDTO);
+    CompletableFuture<Void> eliminarLibro(String id);
     List<LibroResponseDTO> obtenerLibrosPorEstadoLectura(EstadoLectura estadoLectura);
     List<LibroResponseDTO> obtenerLibrosPorGenero(String genero);
     List<LibroResponseDTO> obtenerLibrosPorAutor(String autor);

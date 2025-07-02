@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  spring-api:
+    image: spring-api-image
+    container_name: spring-api-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    networks:
+      - spring-network
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://admin:admin@alkemyjava2cluster.zjipzt1.mongodb.net/tracker?retryWrites=true&w=majority&appName=AlkemyJava2Cluster
+
+networks:
+  spring-network:
+    driver: bridge

@@ -1,11 +1,15 @@
 package com.alkemy.javaNivel2.TrabajoIntegrador.Dto;
 
 import com.alkemy.javaNivel2.TrabajoIntegrador.Model.EstadoLectura;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LibroResponseDTO {
     private String id;
     private String titulo;
